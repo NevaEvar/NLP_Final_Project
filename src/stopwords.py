@@ -4,8 +4,11 @@ nltk.download('stopwords')
 from nltk.corpus import stopwords
 import pandas as pd
 
-"""takes in a act text and returns a dictionary of stop words and their counts, as well as the ratio of stop words to non-stop words"""
+
 def StopWordCountDict(text):
+    """
+    Takes in a act text and returns a dictionary of stop words and their counts, as well as the ratio of stop words to non-stop words
+    """
     # Tokenize the text into words
     text = ' '.join(text)
     words = nltk.word_tokenize(text)
@@ -26,8 +29,12 @@ def StopWordCountDict(text):
     return fDist.most_common(), stopWordsFoundCount/(nonStopWordsFoundCount + stopWordsFoundCount)
 
 
-"""takes in a dictionary of dialogue acts and returns a DataFrame where each cell contains the proportion of a specific stop word in that dialogue act"""
+
 def ProportionalityMatrix(dialogueGroups):
+    """
+    Takes in a dictionary of dialogue acts
+    Returns a DataFrame where each cell contains the proportion of a specific stop word in that dialogue act
+    """
     # create a DataFrame to store the results for further comparison
     # rows contain the dialogue acts, columns contain the stop words found in the dialogue acts
     stopWords = set(stopwords.words('english'))
@@ -54,10 +61,13 @@ def ProportionalityMatrix(dialogueGroups):
     return pd.DataFrame.from_dict(dialogueStopWords, orient='index').fillna(0)
 
 
-"""calculates the precence of stop words in the most frequent tokens in dialogue acts
-#uses the head/tail break method to determine the most frequent tokens"""
+
 def StopWordPropToFreqTokens(text):
-    
+    """
+    calculates the precence of stop words in the most frequent tokens in dialogue acts
+    uses the head/tail break method to determine the most frequent tokens
+    """
+#     
     fDistNorm = nltk.FreqDist(text)
     stopWords = set(stopwords.words('english'))
 
