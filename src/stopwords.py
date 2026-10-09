@@ -87,3 +87,30 @@ def StopWordPropToFreqTokens(text):
             outSideCount += 1
 
     return stopCount / (stopCount + outSideCount), mean
+
+
+def StopWordsAtDistance1(obj, doc):
+    """
+    Takes in a spaCy object and returns a list of stop words that are at distance 1 from the entity
+    """
+    #tests if ent or object and changes the start and end values accordingly
+    start = None
+    end = None
+    if hasattr(obj, 'start'):
+        start = obj.start
+    else:
+        start = obj.i
+    if hasattr(obj, 'end'):
+        end = obj.end  
+    else:
+        end = obj.i + 1
+    
+    stopWords = set(stopwords.words('english'))
+    stopWordsDistance1 = []
+    if start > 0 and doc[start - 1].text.lower() in stopWords:
+        stopWordsDistance1.append(doc[start - 1].text)
+
+    if end < len(doc) and doc[end].text.lower() in stopWords:
+        stopWordsDistance1.append(doc[end].text)
+
+    return stopWordsDistance1
