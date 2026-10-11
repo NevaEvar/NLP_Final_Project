@@ -1,9 +1,6 @@
 import re 
 import nltk
-nltk.download('stopwords')
 from nltk.corpus import stopwords
-import spacy
-nlp = spacy.load('en_core_web_sm')
 
 
 def PreprocessText(text):
@@ -33,10 +30,9 @@ def RemoveStopWords(text):
 
 
 #geeks for geeks implementation
-def Lemmatize(tokens):
+def Lemmatize(tokens, nlp):
     """
     Returns the lemmatized version of the text back
     """
     doc = nlp(' '.join(tokens))
     return [token.lemma_ for token in doc]
-
