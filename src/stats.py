@@ -29,11 +29,7 @@ def MatrixStatistics(matrix, categoryCounts):
         withWord = values * totals
         withoutWord = totals - withWord
 
-        # removes 
         table = np.rint(np.column_stack([withWord, withoutWord])).astype(int)
-        #table = table[table.sum(axis = 1) > 0]
-        #if (table.sum(axis = 0) == 0).any():
-        #    continue
 
         chi2, pValue, dof, expected = chi2_contingency(table)
         cramersV = association(table.astype(int), method = 'cramer')
