@@ -39,10 +39,12 @@ def ProportionalityMatrix(categoryGroups):
     # rows contain the category, columns contain the stop words found in the attributes
     stopWords = set(stopwords.words('english'))
     categoryStopWords = {}
-    for act in categoryGroups.keys():
-        text = ' '.join(categoryGroups[act])
+    categoryTokensTotals = {}
+    for category in categoryGroups.keys():
+        text = ' '.join(categoryGroups[category])
         words = nltk.word_tokenize(text)
         totalTokens = len(words)
+        categoryTokensTotals[category] = totalTokens #needed for statistical calculations
 
         perCatStopWords = defaultdict(int)
         for word in words:
@@ -53,9 +55,9 @@ def ProportionalityMatrix(categoryGroups):
         wordFrequencies = {}
         for word, count in perCatStopWords.items():
             wordFrequencies[word] = count / totalTokens
-        categoryStopWords[act] = wordFrequencies
+        categoryStopWords[category] = wordFrequencies
 
-    return pd.DataFrame.from_dict(categoryStopWords, orient='index').fillna(0)
+    return pd.DataFrame.from_dict(categoryStopWords, orient='index').fillna(0), categoryTokensTotals
 
 
 def StopWordPropToFreqTokens(text):

@@ -23,8 +23,8 @@ def RemoveStopWords(text):
     
     tokens = []
     for word in words:
-            if word.lower() not in stopWords:
-                tokens.append(word.lower())
+        if word.lower() not in stopWords:
+            tokens.append(word.lower())
     
     return tokens
 
