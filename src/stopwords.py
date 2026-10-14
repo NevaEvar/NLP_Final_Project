@@ -2,6 +2,7 @@
 import nltk
 from nltk.corpus import stopwords
 import pandas as pd
+from collections import defaultdict
 
 
 def StopWordCountDict(text):
@@ -29,36 +30,32 @@ def StopWordCountDict(text):
 
 
 
-def ProportionalityMatrix(dialogueGroups):
+def ProportionalityMatrix(categoryGroups):
     """
-    Takes in a dictionary of dialogue acts
-    Returns a DataFrame where each cell contains the proportion of a specific stop word in that dialogue act
+    Takes in a dictionary of some category that has stopwords and words in accordance
+    Returns a DataFrame where each cell contains the proportion of a specific stop word in given category
     """
     # create a DataFrame to store the results for further comparison
-    # rows contain the dialogue acts, columns contain the stop words found in the dialogue acts
+    # rows contain the category, columns contain the stop words found in the attributes
     stopWords = set(stopwords.words('english'))
-    dialogueStopWords = {}
-    for act in dialogueGroups.keys():
-        text = ' '.join(dialogueGroups[act])
+    categoryStopWords = {}
+    for act in categoryGroups.keys():
+        text = ' '.join(categoryGroups[act])
         words = nltk.word_tokenize(text)
         totalTokens = len(words)
 
-        perActStopWords = {}
+        perCatStopWords = defaultdict(int)
         for word in words:
             word = word.lower()
             if word in stopWords:
-                if word in perActStopWords:
-                    perActStopWords[word] += 1
-                else:
-                    perActStopWords[word] = 1
+                perCatStopWords[word] += 1
 
         wordFrequencies = {}
-        for word, count in perActStopWords.items():
+        for word, count in perCatStopWords.items():
             wordFrequencies[word] = count / totalTokens
-        dialogueStopWords[act] = wordFrequencies
+        categoryStopWords[act] = wordFrequencies
 
-    return pd.DataFrame.from_dict(dialogueStopWords, orient='index').fillna(0)
-
+    return pd.DataFrame.from_dict(categoryStopWords, orient='index').fillna(0)
 
 
 def StopWordPropToFreqTokens(text):
@@ -106,10 +103,19 @@ def StopWordsAtDistance1(obj, doc):
     
     stopWords = set(stopwords.words('english'))
     stopWordsDistance1 = []
-    if start > 0 and doc[start - 1].text.lower() in stopWords:
-        stopWordsDistance1.append(doc[start - 1].text)
+    normWords = []
+    if start > 0:
+        word = doc[start - 1].text 
+        if word.lower() in stopWords:
+            stopWordsDistance1.append(word)
+        else: 
+            normWords.append(word)
 
-    if end < len(doc) and doc[end].text.lower() in stopWords:
-        stopWordsDistance1.append(doc[end].text)
+    if end < len(doc):
+        word = doc[end].text
+        if word.lower() in stopWords:
+            stopWordsDistance1.append(word)
+        else:
+            normWords.append(word)
 
-    return stopWordsDistance1
+    return stopWordsDistance1, normWords
