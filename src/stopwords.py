@@ -29,6 +29,15 @@ def StopWordCountDict(text):
     return fDist.most_common(), stopWordsFoundCount/(nonStopWordsFoundCount + stopWordsFoundCount)
 
 
+def EntityCountDict(text):
+    """
+    Takes in entity list and gives back the frequency
+    """
+    #text = ' '.join(text)
+    #print(text)
+    fDist = nltk.FreqDist(text)
+    return fDist.most_common()
+
 
 def ProportionalityMatrix(categoryGroups):
     """
@@ -58,6 +67,31 @@ def ProportionalityMatrix(categoryGroups):
         categoryStopWords[category] = wordFrequencies
 
     return pd.DataFrame.from_dict(categoryStopWords, orient='index').fillna(0), categoryTokensTotals
+
+
+def ProportionalityMatrixEntity(dialogueGroups):
+    """
+    Takes in a dictionary of dialogue acts that has entity labels in accordance of their distance 1 stopwords frequencies
+    Returns a DataFrame where each cell contains the proportions of a specific entity stop word frequency in given dialogue act
+    """
+    # rows contain the dialogue act, columns contain the entity 
+    dialogueEntites = {}
+    dialogueEntitiesTotals = {}
+    for dialogue in dialogueGroups.keys():
+        fDist = nltk.FreqDist(dialogueGroups[dialogue])
+
+        #get totals to calculate proportionality
+        mostCommon = fDist.most_common()
+        entities, freqs = zip(*mostCommon)
+        totalEntityFreq = sum(freqs)
+        dialogueEntitiesTotals[dialogue] = totalEntityFreq
+        
+        entityProp = {}
+        for entity, freq in mostCommon:
+            entityProp[entity] = freq / totalEntityFreq
+        dialogueEntites[dialogue] = entityProp
+
+    return pd.DataFrame.from_dict(dialogueEntites, orient='index').fillna(0), dialogueEntitiesTotals
 
 
 def StopWordPropToFreqTokens(text):
