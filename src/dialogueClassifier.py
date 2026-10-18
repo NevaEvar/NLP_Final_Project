@@ -1,3 +1,5 @@
+# word precense feature and code structure inspired by co-pilot approach suggestion on classification 
+# simple binary word precense implementation
 import re
 import nltk
 from collections import Counter
@@ -9,7 +11,7 @@ from nltk.corpus import nps_chat
 
 def DialogueActFeatureNames(text):
     """
-    Return binary word presence and bigram word precense features for an utterance.
+    Return binary word presence and bigram precense features for an utterance
     """
     tokens = re.findall(r"[a-z0-9']+", str(text).lower())
     features = set()
@@ -26,7 +28,7 @@ def DialogueActFeatureNames(text):
 
 def DialogueActFeatures(text, vocabulary):
     """
-    Extract in vocabulary word and adjacent-word-presence features.
+    Extract in vocabulary word and adjacent word presence features
     """
     allFeatures = DialogueActFeatureNames(text)
     features = {}
@@ -39,12 +41,12 @@ def DialogueActFeatures(text, vocabulary):
 
 def TrainClassifier(examples, maxFeatures=3000):
     """
-    Fit an NLTK Naive Bayes model from (utterance, dialogue act) pairs.
+    Fit an NLTK Naive Bayes model from (utterance, dialogue act) pairs
     """
     featureCounts = Counter()
     for text, label in examples:
         features = DialogueActFeatureNames(text)
-
+        
         for feature in features: 
             featureCounts[feature] += 1
 
@@ -75,12 +77,13 @@ def ExamplesFromFiles(fileIds):
                 text = post.text.strip()
                 label = post.attrib['class']
                 examples.append((text, label))
+
     return examples
 
 
 def PredictDialogueActs(texts, dialogueActVocabulary, dialogueActClassifier):
     """
-    Predict NPS Chat dialogue-act labels for utterances from any corpus.
+    Predict NPS Chat dialogue act labels for utterances from any corpus
     """
     featureSets = []
     for text in texts: 
