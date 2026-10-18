@@ -33,8 +33,6 @@ def EntityCountDict(text):
     """
     Takes in entity list and gives back the frequency
     """
-    #text = ' '.join(text)
-    #print(text)
     fDist = nltk.FreqDist(text)
     return fDist.most_common()
 
@@ -80,7 +78,7 @@ def ProportionalityMatrixEntity(dialogueGroups):
     for dialogue in dialogueGroups.keys():
         fDist = nltk.FreqDist(dialogueGroups[dialogue])
 
-        #get totals to calculate proportionality
+        # get totals to calculate proportionality
         mostCommon = fDist.most_common()
         entities, freqs = zip(*mostCommon)
         totalEntityFreq = sum(freqs)
@@ -125,7 +123,7 @@ def StopWordsAtDistance1(obj, doc):
     """
     Takes in a spaCy object and returns a list of stop words that are at distance 1 from the entity
     """
-    #tests if ent or object and changes the start and end values accordingly
+    # tests if ent or object and changes the start and end values accordingly
     start = None
     end = None
     if hasattr(obj, 'start'):

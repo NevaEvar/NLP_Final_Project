@@ -29,6 +29,7 @@ def MatrixStatistics(matrix, categoryCounts):
         withWord = values * totals
         withoutWord = totals - withWord
 
+        # reshaping solved with co-pilot
         table = np.rint(np.column_stack([withWord, withoutWord])).astype(int)
 
         chi2, pValue, dof, expected = chi2_contingency(table)
