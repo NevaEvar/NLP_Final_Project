@@ -9,4 +9,9 @@ classifierTest.ipynb contains the testing and implementation portion on creating
 Data folder will include the dataset from ClariQ and a portion of Ubuntu corpus (limited due to the massive quantity of it making it impractical to fully analyze). NPS chat corpus can be found through NLTK.
 
 
-Utilization of AI (co-pilot) and other resources will be commented above the code in question and clarified on their usage. 
+Task 9. will be ran on a seperate notebook named classifierTest.ipynb. It includes the classifier used for our two datasets as well as the state of the art implementation for task 9. utilizing RoBERTa and dialogue GRU model on the NPS chat.
+Frozen Distilroberta-base utterance vectors are used in addition with the one trained layer of GRU + classifier. 
+Git hub page of the study used for the state of the art solution: https://github.com/declare-lab/dialogue-understanding.
+
+
+Utilization of AI (co-pilot) and other resources will be commented above the code in question and clarified on their usage.
