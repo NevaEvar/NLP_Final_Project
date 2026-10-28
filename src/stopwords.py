@@ -97,8 +97,12 @@ def StopWordPropToFreqTokens(text):
     calculates the precence of stop words in the most frequent tokens in dialogue acts
     uses the head/tail break method to determine the most frequent tokens
     """
-#     
-    fDistNorm = nltk.FreqDist(text)
+    tokens = []
+    for word in text:
+        tokens.extend(nltk.word_tokenize(word.lower()))    
+
+
+    fDistNorm = nltk.FreqDist(tokens)
     stopWords = set(stopwords.words('english'))
 
     totalCount = 0
